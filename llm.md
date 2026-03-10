@@ -148,6 +148,17 @@ let commands = engine.process(Event { seq: Seq(1), ts: Timestamp(0), payload: ..
 5. **Mutable statics in Logic** — breaks determinism; all state must be in `S`
 6. **Exceeding 16 commands** — extra pushes silently fail; design logic to stay within limit
 
+## DESIGN DECISIONS
+
+| Decision | Rationale |
+|---|---|
+| `E: Copy` (not `Clone`) | Events are small value types (sensor readings, flags). `Copy` prevents accidental expensive clones and makes the API harder to misuse with heap-backed payloads. |
+| `C: Clone + PartialEq` | Commands need `PartialEq` for test assertions (`commands.contains()`). `Clone` is needed because `heapless::Vec` requires it. `Copy` would be too restrictive for commands with variable-size fields. |
+| 16-command buffer | Fixed at compile time to keep stack usage predictable. 16 covers typical industrial scenarios (stop + alarm + N status updates). Increasing requires changing the const generic in `Logic` and `Engine`. |
+| `Decimal = i64` / `SCALE = 10^6` | 6 decimal places cover most sensor precision needs. `i64` range is +/-9.2 * 10^12 scaled units, or +/-9.2 * 10^6 real units — sufficient for pressure (bar), temperature (C), flow (m3/h). |
+| `PhantomData<L>` | `Logic` has no instance data — it's a zero-sized type used only for its `step` associated function. `PhantomData` tells the compiler about the type parameter without occupying memory. |
+| No `Error` return from `process()` | Invariant violations are programming errors, not recoverable runtime conditions. `debug_assert!` / `assert!` is the correct response. |
+
 ## NOT IN SCOPE
 
 No networking, no persistence, no async, no scheduling, no heap allocation, no floating-point.

@@ -14,7 +14,9 @@ detcore = "0.1"
 
 ## Overview
 
-DETCORE is a strict, generic, zero-allocation execution engine for deterministic state machines. Designed for industrial controllers, embedded systems, safety-critical applications, and any domain where identical inputs must always produce identical outputs.
+DETCORE is a generic state machine engine where `Logic::step` is a pure function: same state + same event = same output, always. All arithmetic is integer-only (`i64` fixed-point), time is injected externally, and the command buffer is stack-allocated with a fixed capacity.
+
+Intended for embedded controllers, deterministic simulations, and systems where reproducibility matters. Not certified for safety-critical use (DO-178C, IEC 61508, etc.) — that requires domain-specific qualification beyond what a library can provide.
 
 **Not** a scheduler, async runtime, event bus, or distributed system.
 

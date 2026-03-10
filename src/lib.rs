@@ -5,10 +5,14 @@
 //! Minimal `no_std` deterministic state machine engine for Rust.
 //! Single dependency (`heapless`).
 //!
-//! DETCORE is a strict, generic, zero-allocation execution engine for
-//! deterministic state machines. Designed for industrial controllers,
-//! embedded systems, safety-critical applications, and any domain where
-//! identical inputs must always produce identical outputs.
+//! DETCORE is a generic state machine engine where [`Logic::step`] is a
+//! pure function: same state + same event = same output, always. All
+//! arithmetic is integer-only (`i64` fixed-point), time is injected
+//! externally, and the command buffer is stack-allocated with a fixed
+//! capacity.
+//!
+//! Intended for embedded controllers, deterministic simulations, and
+//! systems where reproducibility matters.
 //!
 //! **Not** a scheduler, async runtime, event bus, or distributed system.
 //!
