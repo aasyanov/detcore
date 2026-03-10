@@ -1,0 +1,24 @@
+[package]
+name = "detcore"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.81"
+description = "Minimal no_std deterministic state machine engine. Single dependency."
+license = "MIT"
+repository = "https://github.com/aasyanov/detcore"
+categories = ["no-std", "embedded"]
+keywords = ["deterministic", "state-machine", "no_std", "embedded", "safety"]
+
+[dependencies]
+heapless = "0.7"
+
+[features]
+strict = []
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+proptest = "1.4"
+
+[[bench]]
+name = "engine_benchmark"
+harness = false

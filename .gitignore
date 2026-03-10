@@ -1,0 +1,21 @@
+# Build artifacts
+/target/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Benchmark reports
+criterion/
+
+# Coverage
+*.profraw
+lcov.info
+tarpaulin-report.html
